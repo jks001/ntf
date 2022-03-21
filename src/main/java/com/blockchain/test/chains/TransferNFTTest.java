@@ -35,6 +35,11 @@ import java.util.concurrent.ExecutionException;
  */
 public class TransferNFTTest {
 
+    //ERC1155合约地址
+    private static final String contractAddress_1155 = "0x0D82DaBe364eB5A2bc8017C312b6325bB7A75C02";
+
+    //ERC721合约地址
+    private static final String contractAddress_721 = "0xAcc196F9Ea2434CC99198Fdfd3d7204a815CE44a";
     /**
      * 查询账户信息
      * @throws Throwable
@@ -57,11 +62,6 @@ public class TransferNFTTest {
             //eth默认账户，密码为空
             String privateKey = "2836c656631bd1c3f367ecce5f9994135359b755e7607a13df2cf5069b0a6b35";
 
-            //ERC721合约地址
-            String contractAddress_721 = "0xAcc196F9Ea2434CC99198Fdfd3d7204a815CE44a";
-            //ERC1155 合约地址
-            String contractAddress_1155 = "0x037a2872B049fb54b0e3911e66862802760167E4";
-
             //String tockenUrl1 = "https://ipfs.io/ipfs/QmRKpSQVE4fYWypiH1PnnAKN1Nhux1he8JqaBca83uxr3x";
             String tockenUrl = "https://ipfs.io/ipfs/QmNjzzuKCF1q3boi6obrCP6mydQ4dHj113KALXxAikVinQ";
 //            String tockenUrl3 = "https://ipfs.io/ipfs/Qmc5aumGZ38VaPtMXQyUHYv6F6unHsSw5uQkTwiyt5QVnG";
@@ -81,8 +81,6 @@ public class TransferNFTTest {
             String to = "0x4cc82389a388b79656740e58fcd9f436f6295955";
             //eth默认账户，密码为空
             String privateKey = "2836c656631bd1c3f367ecce5f9994135359b755e7607a13df2cf5069b0a6b35";
-            //ERC1155 合约地址
-            String contractAddress_1155 = "0xAcc196F9Ea2434CC99198Fdfd3d7204a815CE44a";
 
             List<Uint256> tokenIds = Arrays.asList(new Uint256(7000),new Uint256(5000));
             List<Uint256> mounts = Arrays.asList(new Uint256(20),new Uint256(20));
@@ -103,11 +101,9 @@ public class TransferNFTTest {
             //eth默认账户，密码为空
             String privateKey = "2836c656631bd1c3f367ecce5f9994135359b755e7607a13df2cf5069b0a6b35";
             String to = "0x13bdb45e4da0e38759b0171f7f229d2f6101c409";
-            //ERC721合约地址
-            String contractAddress = "0xAcc196F9Ea2434CC99198Fdfd3d7204a815CE44a";
 
             BigInteger tockenId = new BigInteger("1");
-            String transactionHash = transferBalanceBaseErc721(from,privateKey,to,contractAddress,tockenId);
+            String transactionHash = transferBalanceBaseErc721(from,privateKey,to,contractAddress_721,tockenId);
             System.out.println("transactionHash value: "+transactionHash);
         }catch (Exception e){
             e.printStackTrace();
@@ -124,11 +120,9 @@ public class TransferNFTTest {
             //eth默认账户，密码为空
             String privateKey = "2836c656631bd1c3f367ecce5f9994135359b755e7607a13df2cf5069b0a6b35";
             String to = "0x13bdb45e4da0e38759b0171f7f229d2f6101c409";
-            //ERC1155合约地址
-            String contractAddress_1155 = "0x037a2872B049fb54b0e3911e66862802760167E4";
 
-            List<Uint256> tokenIds = Arrays.asList(new Uint256(1000),new Uint256(3000),new Uint256(5000));
-            List<Uint256> mounts = Arrays.asList(new Uint256(10),new Uint256(10),new Uint256(10));
+            List<Uint256> tokenIds = Arrays.asList(new Uint256(1000),new Uint256(5000));
+            List<Uint256> mounts = Arrays.asList(new Uint256(10),new Uint256(10));
 
             String transactionHash = transferBalanceBaseErc1155(from,privateKey,to,contractAddress_1155,tokenIds,mounts);
             System.out.println("transactionHash value: "+transactionHash);
