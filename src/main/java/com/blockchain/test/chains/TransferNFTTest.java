@@ -21,7 +21,6 @@ import org.web3j.utils.Numeric;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -476,16 +475,4 @@ public class TransferNFTTest {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        String test1 = "0x12312dsssfaf";
-        System.out.println(test1.substring(2));
-
-        List<String> testList = Arrays.asList("123","455");
-
-        String[] test = testList.stream().toArray(String[] :: new);
-        System.out.println(test);
-
-    }
-
 }
