@@ -1,6 +1,7 @@
-package com.blockchain.test.chains;
+package com.blockchain.test.service.impl;
 
 
+import com.blockchain.test.rpc.EthRpcService;
 import com.google.common.collect.ImmutableList;
 import org.bitcoinj.crypto.*;
 import org.bitcoinj.wallet.DeterministicSeed;
@@ -36,7 +37,7 @@ public class EthChainTest {
      */
     @Test
     public void getAccountsTest() throws Exception{
-        Request<?, EthAccounts> request =  EthService.initGeth().ethAccounts();
+        Request<?, EthAccounts> request =  EthRpcService.initGeth().ethAccounts();
         EthAccounts ethAccounts = request.send();
         //[0x4cc82389a388b79656740e58fcd9f436f6295955, 0x13bdb45e4da0e38759b0171f7f229d2f6101c409]
         List<String> accounts = ethAccounts.getAccounts();
@@ -108,7 +109,7 @@ public class EthChainTest {
      */
     @Test
     public void unlockAccountTest() throws IOException {
-        Admin admin = EthService.initAdmin();
+        Admin admin = EthRpcService.initAdmin();
         String address = "0x278bc7e2a48b73fc683e5213ec446a1bb5adb43a";
         BigInteger timeSeconds = new BigInteger("100000000");
         /**
@@ -127,7 +128,7 @@ public class EthChainTest {
      * @throws IOException
      */
     private String createAccounts(String passWord) throws IOException {
-        Admin admin = EthService.initAdmin();
+        Admin admin = EthRpcService.initAdmin();
         Request<?, NewAccountIdentifier> request = admin.personalNewAccount(passWord);
         NewAccountIdentifier result = request.send();
         String accountId = result.getAccountId();
@@ -165,17 +166,37 @@ public class EthChainTest {
     @Test
     public void getBalanceTest(){
         try {
-            String address = "0x4cc82389a388b79656740e58fcd9f436f6295955";
+            String address = "0x4ecf34fe48b729d1a1a90e27ccc63c2207820376";
+            String address1 = "0xb81a72b477ef1b5ea2e4eb580309e1fe255c3200";
+            //
             BigInteger balance = getBalance(address);
             System.out.println(balance);
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
+    @Test
+    public void broadCastTest(){
+        String signHash0 = "0xf86e808509502f900083015f9094b81a72b477ef1b5ea2e4eb580309e1fe255c3200872386f26fc1000080820a95a0d56a10d8f3f3bb16c76c245bdb5b6f2a864a70ca5561c5f1ae4f3800773d4162a05bf041ac0a6d712d87eff21cc8336e398cd5e289209445f29d735dbaf5bad0fb";
+        String signHash1 = "0xf86e018502cb41780083015f90944ecf34fe48b729d1a1a90e27ccc63c220782037687038d7ea4c6800080820a96a0a89bfdc1483b1b63e542d1c4cc0eb05f2370e980edd3e359d8632f859e6d206da04f9dee8ef76026c1c5c6add9b5fb92f596947a1f19651aba966295786eb7d09e";
+        String signHash2 = "0xf8ac03851f3305bc00830120c1946e12b66036b4cc58dbae267cfa6dac5800fe45d580b844a9059cbb0000000000000000000000004ecf34fe48b729d1a1a90e27ccc63c2207820376000000000000000000000000000000000000000000000000000000000000000a820a96a081bd890a37fb6e5327185b9f541817af468035ad712701b2ddfa43c179c18c1ca0053f152b3650e39641d77a332d5de6d2915f8953438aadc6b792f83de1d92a43";
+        String signHash = "0xf8ac80851f3305bc00830120c1946e12b66036b4cc58dbae267cfa6dac5800fe45d580b844a9059cbb0000000000000000000000004ecf34fe48b729d1a1a90e27ccc63c2207820376000000000000000000000000000000000000000000000000000000000000000a820a96a08d202dd2d4ed5bead925600565da0884b1df383542a25f2db0bfc21f610269b9a06eb351cb1cb69e025a7b818f262ad513e1109465df78329e2886632ed894a4fc";
+
+        //发起交易（广播以太坊交易）
+        try{
+            Web3j web3j = EthRpcService.intWeb3j();
+            EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(signHash1).sendAsync().get();
+            Object boradCastResult = ethSendTransaction.getTransactionHash();
+            System.out.println("boradCastResult : " + boradCastResult);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     private BigInteger getBalance(String address) throws IOException{
-        Web3j web3j = EthService.intWeb3j();
+        Web3j web3j = EthRpcService.intWeb3j();
         Request<?, EthGetBalance> request = web3j.ethGetBalance(address, DefaultBlockParameter.valueOf("latest"));
         EthGetBalance result = request.send();
         return result.getBalance();
@@ -191,9 +212,9 @@ public class EthChainTest {
             //eth默认账户，密码为空
             String passWordFrom = "";
             String keyStrore = "/Users/jikunshan/Documents/doc/eth_self/keystore/UTC--2022-02-15T06-03-54.178873000Z--4cc82389a388b79656740e58fcd9f436f6295955";
-            String to = "0x58f724a1f0e5619954c15984ebabea492ba31a70";
+            String to = "0x8ac507d3d2a451211448913ea6023e595cb0543c";
             //该值默认为ETHR
-            int value = 2;
+            int value = 100;
             String data = "转账测试！";
             String transactionHash = transferBalance(from,passWordFrom,keyStrore,to,value,data);
             System.out.println(transactionHash);
@@ -201,7 +222,6 @@ public class EthChainTest {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -236,7 +256,7 @@ public class EthChainTest {
      */
     private String transferBalance(String from,String passWordFrom, String keyStore,String to , int value,String data){
         try{
-            Web3j web3j = EthService.intWeb3j();
+            Web3j web3j = EthRpcService.intWeb3j();
             //生成转账的凭证，需要传入私钥 （由密码及keyStore生成）
             Credentials credentials = Credentials.create(getPrivateKey(passWordFrom,keyStore));
             //交易的笔数
@@ -281,6 +301,7 @@ public class EthChainTest {
     }
 
 
+
     /**
      * 转账流程。
      * @param from 转账发送人
@@ -292,7 +313,7 @@ public class EthChainTest {
      */
     private String transferBalance(String from,String privateKey,String to , int value,String data){
         try{
-            Web3j web3j = EthService.intWeb3j();
+            Web3j web3j = EthRpcService.intWeb3j();
             //转账的凭证，需要传入私钥
             Credentials credentials = Credentials.create(privateKey);
             //交易的笔数

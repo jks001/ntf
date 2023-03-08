@@ -1,6 +1,7 @@
-package com.blockchain.test.chains;
+package com.blockchain.test.service.impl;
 
 
+import com.blockchain.test.rpc.EthRpcService;
 import org.junit.Test;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.*;
@@ -46,7 +47,7 @@ public class TransferNFTTest {
      */
     @Test
     public void getAccountsTest() throws Exception{
-        Request<?, EthAccounts> request =  EthService.initGeth().ethAccounts();
+        Request<?, EthAccounts> request =  EthRpcService.initGeth().ethAccounts();
         EthAccounts ethAccounts = request.send();
         List<String> accounts = ethAccounts.getAccounts();
         System.out.println(accounts);
@@ -141,7 +142,7 @@ public class TransferNFTTest {
      */
     private String transferBalanceBaseErc721(String from,String privateKey,String to ,String contractAddress,BigInteger tockenId){
         try{
-            Web3j web3j = EthService.intWeb3j();
+            Web3j web3j = EthRpcService.intWeb3j();
             //转账的凭证，需要传入私钥
             Credentials credentials = Credentials.create(privateKey);
             //交易的笔数
@@ -182,7 +183,7 @@ public class TransferNFTTest {
      */
     private String transferBalanceBaseErc1155(String from,String privateKey,String to ,String contractAddress,List<Uint256> tokenIds,List<Uint256> amounts){
         try{
-            Web3j web3j = EthService.intWeb3j();
+            Web3j web3j = EthRpcService.intWeb3j();
             //转账的凭证，需要传入私钥
             Credentials credentials = Credentials.create(privateKey);
             //交易的笔数
@@ -227,7 +228,7 @@ public class TransferNFTTest {
      */
     private String testMintBaseErc721(String privateKey,String to ,String contractAddress ,String tockenUrl){
         try{
-            Web3j web3j = EthService.intWeb3j();
+            Web3j web3j = EthRpcService.intWeb3j();
 
             //转账的凭证，需要传入私钥
             Credentials credentials = Credentials.create(privateKey);
@@ -266,7 +267,7 @@ public class TransferNFTTest {
      */
     private String testMintBaseErc1155(String privateKey,String to ,String contractAddress ,List<Uint256> tokenIds,List<Uint256> amounts){
         try{
-            Web3j web3j = EthService.intWeb3j();
+            Web3j web3j = EthRpcService.intWeb3j();
 
             //转账的凭证，需要传入私钥
             Credentials credentials = Credentials.create(privateKey);

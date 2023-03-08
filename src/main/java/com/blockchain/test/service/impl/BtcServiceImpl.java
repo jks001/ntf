@@ -454,7 +454,7 @@ public class BtcServiceImpl implements BtcService {
         for (int i = 0 ; i< recevieAddrs.size() ; i++){
             // 接收地址
             Address receiveAddress = Address.fromBase58(params, recevieAddrs.get(i));
-            tx.addOutput(Coin.valueOf(amounts.get(i)), receiveAddress); // 转出
+            tx.addOutput(Coin.valueOf(amounts.get(i)), receiveAddress); // 输出（转入）
         }
 
         // 如果需要找零 消费列表总金额 - 已经转账的金额 - 手续费

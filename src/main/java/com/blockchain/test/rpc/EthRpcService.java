@@ -1,4 +1,4 @@
-package com.blockchain.test.chains;
+package com.blockchain.test.rpc;
 
 
 import org.web3j.protocol.Web3j;
@@ -9,7 +9,7 @@ import org.web3j.protocol.http.HttpService;
 /**
  * 以太坊Web3j 服务。
  */
-public class EthService {
+public class EthRpcService {
     /**
      * eth客户端RPC访问地址
      */
